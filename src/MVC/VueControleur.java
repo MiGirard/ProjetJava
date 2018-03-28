@@ -82,7 +82,7 @@ public class VueControleur extends Application {
         
        for (int column = 0; column < 5; column++) {
             for (int row = 0; row < 5; row++) {
-                Canvas canvas = new Canvas(50,50);
+                Canvas canvas = new Canvas(200,200);
                 initCanvas(canvas);
                 gPane.add(canvas, column, row);    
             }
@@ -99,8 +99,7 @@ public class VueControleur extends Application {
         primaryStage.show();
         
     }
-    
-    
+   
         private void initDraw(GraphicsContext gc){
         double canvasWidth = gc.getCanvas().getWidth();
         double canvasHeight = gc.getCanvas().getHeight();
@@ -122,40 +121,25 @@ public class VueControleur extends Application {
 
     }
         
-        private void initCanvas(Canvas canvas){
+    private void initCanvas(Canvas canvas){
             
-            final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-            initDraw(graphicsContext);
+        final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+        initDraw(graphicsContext);
             
-            canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, 
-            new EventHandler<MouseEvent>(){
+        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, (MouseEvent mousePressed) -> {
+            graphicsContext.beginPath();
+            graphicsContext.moveTo(mousePressed.getX(), mousePressed.getY());
+            graphicsContext.stroke();
+            });
 
-            @Override
-            public void handle(MouseEvent event) {
-                graphicsContext.beginPath();
-                graphicsContext.moveTo(event.getX(), event.getY());
-                graphicsContext.stroke();
-            }
-        });
+        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, (MouseEvent mouseDragged) -> {
+            
+            graphicsContext.lineTo(mouseDragged.getX(), mouseDragged.getY());
+            graphicsContext.stroke();
+            });
 
-        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, 
-                new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-                graphicsContext.lineTo(event.getX(), event.getY());
-                graphicsContext.stroke();
-            }
-        });
-
-        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, 
-                new EventHandler<MouseEvent>(){
-
-            @Override
-            public void handle(MouseEvent event) {
-
-            }
-        });
+        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent mouseReleased) -> {
+            });
         }
 
 
