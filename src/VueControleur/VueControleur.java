@@ -12,12 +12,12 @@ package VueControleur;
  * and open the template in the editor.
  */
 
-import Modele.Grille;
-import Modele.Lien;
+import Modele.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -54,6 +54,9 @@ import static javafx.application.Application.launch;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 
 public class VueControleur extends Application {
@@ -78,17 +81,6 @@ public class VueControleur extends Application {
         affichage.setFill(Color.RED);
         border.setTop(affichage);
         
-
-
-        // la vue observe les "update" du modèle, et réalise les mises à jour graphiques
-        m.addObserver(new Observer() {
-
-            @Override
-            public void update(Observable o, Object arg) {
-                // TODO
-            }
-        });
-        
        Canvas canvas = new Canvas((200*m.getTab().length), (200*m.getTab()[0].length));
        initCanvas(canvas);
        gPane.add(canvas,0,0);
@@ -102,6 +94,19 @@ public class VueControleur extends Application {
         primaryStage.setTitle("Drag & Drop");
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        Alert alertwin = new Alert(AlertType.WARNING);
+        alertwin.setTitle("T FOR");
+        alertwin.setHeaderText("null");
+        alertwin.setContentText("Vous avez gagnez...");
+        
+        m.addObserver(new Observer() {
+
+            @Override
+            public void update(Observable o, Object arg) {
+           
+            }
+        });
         
     }
    
@@ -145,8 +150,8 @@ public class VueControleur extends Application {
         for (int column = 0; column < m.getTab().length; column++) {
             for (int row = 0; row < m.getTab()[0].length; row++) {
                 gc.strokeRect(
-                column*200,              //x of the upper left corner
-                row*200,              //y of the upper left corner
+                row*200,              //x of the upper left corner
+                column*200,              //y of the upper left corner
                 200,    //width of the rectangle
                 200);  //height of the rectangle
             }
@@ -198,8 +203,31 @@ public class VueControleur extends Application {
             
             
             });
+            
+            
         }
-
+    
+    public void loose(){
+        Alert alertloose = new Alert(AlertType.WARNING);
+        alertloose.setTitle("T NUL");
+        alertloose.setHeaderText(null);
+        alertloose.setContentText("Vous avez perdu. haha.");
+        Optional<ButtonType> result = alertloose.showAndWait();
+        if (result.get() == ButtonType.OK){
+            System.exit(0);
+        } 
+    }
+    
+    public void win(){
+        Alert alertwin = new Alert(AlertType.WARNING);
+        alertwin.setTitle("T FOR");
+        alertwin.setHeaderText(null);
+        alertwin.setContentText("Vous avez gagnez...");
+        Optional<ButtonType> result = alertwin.showAndWait();
+        if (result.get() == ButtonType.OK){
+            System.exit(0);
+        } 
+    } 
 
     /**
      * @param args the command line arguments
@@ -207,6 +235,7 @@ public class VueControleur extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
     
     
     

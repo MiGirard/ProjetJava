@@ -30,6 +30,22 @@ public class Case {
         this.column = column;
         this.symbole = null;
     }
+    
+    public Case(Symbole symbole, Lien lien, int row, int column) {
+        if(symbole != null){
+            this.symbole = symbole;
+            this.row = row;
+            this.column = column;
+            this.lien = null;
+        }
+        else{
+            this.symbole = null;
+            this.row = row;
+            this.column = column;
+            this.lien = lien;
+        }
+    }
+
 
     public Case(int row, int column) {
         this.row = row;
@@ -72,6 +88,20 @@ public class Case {
 
     public void setColumn(int column) {
         this.column = column;
+    }
+
+    @Override
+    public String toString() {
+        return "Case{" + "symbole=" + symbole + ", lien=" + lien + ", row=" + row + ", column=" + column + '}';
+    }
+    
+    public boolean equals(Case c){
+        if(this.getRow() == c.getRow() && this.getColumn() == c.getColumn()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     
     
