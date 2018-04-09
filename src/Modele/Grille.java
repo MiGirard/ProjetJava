@@ -16,8 +16,16 @@ import java.util.Observable;
  */
 public class Grille extends Observable {
     
-    private List liste = new ArrayList<Case>();    
+    private List listeCase = new ArrayList<Case>();
+    private List listeChemin = new ArrayList<Chemin>();
     private Case[][] tab;
+    
+    boolean [][] tabTest = new boolean[tab.length][tab[0].length];
+    /*for(int i = 0; i<tabTest.length; i++){
+        for(int j = 0; j<tabTest[0].length; j++){
+            tabTest[i][j] = false;
+    }
+    }*/
     
     private int lastC, lastR;
     
@@ -40,14 +48,17 @@ public class Grille extends Observable {
         System.out.println("startDD : " + c + "-" + r);
         setChanged();
         notifyObservers();
-        liste.clear();
-        liste.add(new Case(this.tab[c][r].getSymbole(), c, r));
+        listeCase.clear();
+        listeCase.add(new Case(this.tab[c][r].getSymbole(), c, r));
     }
     
     public void stopDD(int c, int r) {
         // TODO
-        liste.add(new Case(this.tab[c][r].getSymbole(), c, r));
-        Chemin ch = Chemin.verifierChemin((ArrayList<Case>)liste);
+        listeCase.add(new Case(this.tab[c][r].getSymbole(), c, r));
+        Chemin ch = Chemin.verifierChemin((ArrayList<Case>)listeCase);
+        if(ch != null){
+            listeChemin.add(ch);
+        }
         // mémoriser le dernier objet renvoyé par parcoursDD pour connaitre la case de relachement
         
         System.out.println("stopDD : " + c + "-" + r + " -> " + lastC + "-" + lastR);
@@ -60,7 +71,7 @@ public class Grille extends Observable {
     
     public void parcoursDD(int c, int r) {
         // TODO
-        liste.add(new Case(this.tab[c][r].getLien(), c,r));
+        listeCase.add(new Case(this.tab[c][r].getLien(), c,r));
         lastC = c;
         lastR = r;
         System.out.println("parcoursDD : " + c + "-" + r);

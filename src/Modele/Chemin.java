@@ -30,5 +30,15 @@ public class Chemin {
         
         return null;
     }
+
+    public List getListe() {
+        return liste;
+    }
+
+    public void setListe(List liste) {
+        this.liste = liste;
+    }
+    
+    
     
 }
