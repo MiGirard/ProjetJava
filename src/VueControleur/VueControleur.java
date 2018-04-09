@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package MVC;
+package VueControleur;
 
 
 /*
@@ -12,8 +12,14 @@ package MVC;
  * and open the template in the editor.
  */
 
+import Modele.Grille;
+import Modele.Lien;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 
@@ -44,20 +50,23 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import static javafx.application.Application.launch;
+import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 
 
 
 public class VueControleur extends Application {
 
-    
-    Modele m;
-    
+    private int largeur = 3, longueur = 3;
+    Grille m;
+    private int windowX, windowY;
 
     @Override
     public void start(Stage primaryStage) {
 
         // initialisation du modèle que l'on souhaite utiliser
-        m = new Modele();
+        m = new Grille();
         // gestion du placement (permet de palcer le champ Text affichage en haut, et GridPane gPane au centre)
         BorderPane border = new BorderPane();
 
@@ -80,19 +89,15 @@ public class VueControleur extends Application {
             }
         });
         
-       for (int column = 0; column < 5; column++) {
-            for (int row = 0; row < 5; row++) {
-                Canvas canvas = new Canvas(200,200);
-                initCanvas(canvas);
-                gPane.add(canvas, column, row);    
-            }
-        }
+       Canvas canvas = new Canvas((200*m.getTab().length), (200*m.getTab()[0].length));
+       initCanvas(canvas);
+       gPane.add(canvas,0,0);
 
         gPane.setGridLinesVisible(true);
 
         border.setCenter(gPane);
 
-        Scene scene = new Scene(border, Color.LIGHTBLUE);
+        Scene scene = new Scene(border, Color.LIGHTGRAY);
 
         primaryStage.setTitle("Drag & Drop");
         primaryStage.setScene(scene);
@@ -107,22 +112,55 @@ public class VueControleur extends Application {
         gc.setFill(Color.LIGHTGRAY);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(5);
+        
+        
+        Image img = null;
+        try {
+            img = new Image(new FileInputStream(Lien.CASE_VIDE.getChemin()));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(VueControleur.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        for (int column = 0; column < m.getTab().length; column++) {
+            for (int row = 0; row < m.getTab()[0].length; row++) {
+                if(m.getTab()[column][row].getLien() == null){
+                     try {
+                        img = new Image(new FileInputStream(m.getTab()[column][row].getSymbole().getChemin()));
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(VueControleur.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else if(m.getTab()[column][row].getSymbole() == null){
+                    try {
+                        img = new Image(new FileInputStream(m.getTab()[column][row].getLien().getChemin()));
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(VueControleur.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                }
+                gc.drawImage(img, column*200, row*200);
+            }
+        }
 
         gc.fill();
-        gc.strokeRect(
-                0,              //x of the upper left corner
-                0,              //y of the upper left corner
-                canvasWidth,    //width of the rectangle
-                canvasHeight);  //height of the rectangle
+        //Création de la grille (graphique)
+        for (int column = 0; column < m.getTab().length; column++) {
+            for (int row = 0; row < m.getTab()[0].length; row++) {
+                gc.strokeRect(
+                column*200,              //x of the upper left corner
+                row*200,              //y of the upper left corner
+                200,    //width of the rectangle
+                200);  //height of the rectangle
+            }
+        }
+        
 
         gc.setFill(Color.RED);
         gc.setStroke(Color.BLUE);
-        gc.setLineWidth(1);
+        gc.setLineWidth(2);
 
     }
         
     private void initCanvas(Canvas canvas){
-            
+     
         final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         initDraw(graphicsContext);
             
@@ -130,15 +168,33 @@ public class VueControleur extends Application {
             graphicsContext.beginPath();
             graphicsContext.moveTo(mousePressed.getX(), mousePressed.getY());
             graphicsContext.stroke();
+            int col, row;
+            col = (int)(mousePressed.getX())%200;
+            row = (int)(mousePressed.getY())%200;
+            m.startDD(col,row);
+            
             });
 
         canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, (MouseEvent mouseDragged) -> {
             
             graphicsContext.lineTo(mouseDragged.getX(), mouseDragged.getY());
             graphicsContext.stroke();
+            int col, row;
+            col = (int)(mouseDragged.getX())%200;
+            row = (int)(mouseDragged.getY())%200;
+            m.parcoursDD(col,row);
             });
 
         canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent mouseReleased) -> {
+            Scene scene = canvas.getScene();
+            Point2D nodeCoord = new Point2D(scene.getX(), scene.getY());
+            int col, row;
+            col = (int)(mouseReleased.getX()-nodeCoord.getX())%200;
+            row = (int)(mouseReleased.getY()-nodeCoord.getY())%200;
+            m.stopDD(col,row);
+            //System.out.println(nodeCoord.getY());
+            
+            
             });
         }
 
@@ -149,6 +205,8 @@ public class VueControleur extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
+    
     
     
 

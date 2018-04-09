@@ -4,16 +4,36 @@
  * and open the template in the editor.
  */
 
-package MVC;
+package Modele;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 /**
  *
  * @author p1506391
  */
-public class Modele extends Observable {
-    int lastC, lastR;
+public class Grille extends Observable {
+    
+    private List liste = new ArrayList<Case>();    
+    private Case[][] tab;
+    
+    private int lastC, lastR;
+    
+    
+    public Grille(){
+        tab = new Case[3][3];
+        for(int i = 0; i < this.tab.length; i++){
+            for(int j = 0; j < this.tab[0].length; j++){
+                tab[i][j] = new Case(Lien.CASE_VIDE ,i, j);
+            }
+        }
+        tab[0][0] = new Case(Symbole.CARRE, 0, 0);
+        tab[1][2] = new Case(Symbole.CARRE, 1, 2);
+        tab[2][0] = new Case(Symbole.ETOILE, 2, 0);
+        tab[2][2] = new Case(Symbole.ETOILE, 2, 2);
+    }
     
     public void startDD(int c, int r) {
         // TODO
@@ -39,6 +59,19 @@ public class Modele extends Observable {
         System.out.println("parcoursDD : " + c + "-" + r);
         setChanged();
         notifyObservers();
+    }
+    
+    private boolean verifierParcours(ArrayList<Case> l){
+        
+        return false;
+    }
+    
+    public void setTab(Case[][] tab){
+        this.tab = tab;
+    }
+    
+    public Case[][] getTab(){
+        return this.tab;
     }
     
 }
