@@ -40,20 +40,27 @@ public class Grille extends Observable {
         System.out.println("startDD : " + c + "-" + r);
         setChanged();
         notifyObservers();
+        liste.clear();
+        liste.add(new Case(this.tab[c][r].getSymbole(), c, r));
     }
     
     public void stopDD(int c, int r) {
         // TODO
-        
+        liste.add(new Case(this.tab[c][r].getSymbole(), c, r));
+        Chemin ch = Chemin.verifierChemin((ArrayList<Case>)liste);
         // mémoriser le dernier objet renvoyé par parcoursDD pour connaitre la case de relachement
         
         System.out.println("stopDD : " + c + "-" + r + " -> " + lastC + "-" + lastR);
         setChanged();
         notifyObservers();
+        /*for(Case ca: (ArrayList<Case>)liste){
+            System.out.println("Column : " + ca.getColumn() + ", Row : "+ca.getRow());
+        }*/
     }
     
     public void parcoursDD(int c, int r) {
         // TODO
+        liste.add(new Case(this.tab[c][r].getLien(), c,r));
         lastC = c;
         lastR = r;
         System.out.println("parcoursDD : " + c + "-" + r);
@@ -73,5 +80,14 @@ public class Grille extends Observable {
     public Case[][] getTab(){
         return this.tab;
     }
+
+    public int getLastC() {
+        return lastC;
+    }
+
+    public int getLastR() {
+        return lastR;
+    }
+    
     
 }

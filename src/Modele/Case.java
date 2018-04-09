@@ -31,6 +31,15 @@ public class Case {
         this.symbole = null;
     }
 
+    public Case(int row, int column) {
+        this.row = row;
+        this.column = column;
+        this.symbole = null;
+        this.lien = null;
+    }
+    
+    
+    
     public Symbole getSymbole() {
         return symbole;
     }
@@ -49,10 +58,12 @@ public class Case {
 
     public void setSymbole(Symbole symbole) {
         this.symbole = symbole;
+        this.lien = null;
     }
 
     public void setLien(Lien lien) {
         this.lien = lien;
+        this.symbole = null;
     }
 
     public void setRow(int row) {

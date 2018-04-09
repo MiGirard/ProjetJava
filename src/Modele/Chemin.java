@@ -20,8 +20,15 @@ public class Chemin {
         this.liste = new ArrayList<Case>();
     }
     
-    public Chemin(List l){
+    public Chemin(ArrayList<Case> l){ 
         this.liste = l;
+    }
+    
+    public static Chemin verifierChemin(ArrayList<Case> l){
+        boolean test = true;
+                
+        
+        return null;
     }
     
 }

@@ -154,8 +154,8 @@ public class VueControleur extends Application {
         
 
         gc.setFill(Color.RED);
-        gc.setStroke(Color.BLUE);
-        gc.setLineWidth(2);
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(3);
 
     }
         
@@ -184,7 +184,9 @@ public class VueControleur extends Application {
             int col, row;
             col = (int)(nodeCoord.getX())/200;
             row = (int)(nodeCoord.getY())/200;
-            m.parcoursDD(col,row);
+            if(col != m.getLastC() || row != m.getLastR()){
+                m.parcoursDD(col,row);
+            }
             });
 
         canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent mouseReleased) -> {
