@@ -168,9 +168,10 @@ public class VueControleur extends Application {
             graphicsContext.beginPath();
             graphicsContext.moveTo(mousePressed.getX(), mousePressed.getY());
             graphicsContext.stroke();
+            Point2D nodeCoord = canvas.localToScene(mousePressed.getX(), mousePressed.getY());
             int col, row;
-            col = (int)(mousePressed.getX())%200;
-            row = (int)(mousePressed.getY())%200;
+            col = (int)(nodeCoord.getX())/200;
+            row = (int)(nodeCoord.getY())/200;
             m.startDD(col,row);
             
             });
@@ -179,20 +180,19 @@ public class VueControleur extends Application {
             
             graphicsContext.lineTo(mouseDragged.getX(), mouseDragged.getY());
             graphicsContext.stroke();
+            Point2D nodeCoord = canvas.localToScene(mouseDragged.getX(), mouseDragged.getY());
             int col, row;
-            col = (int)(mouseDragged.getX())%200;
-            row = (int)(mouseDragged.getY())%200;
+            col = (int)(nodeCoord.getX())/200;
+            row = (int)(nodeCoord.getY())/200;
             m.parcoursDD(col,row);
             });
 
         canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, (MouseEvent mouseReleased) -> {
-            Scene scene = canvas.getScene();
-            Point2D nodeCoord = new Point2D(scene.getX(), scene.getY());
+            Point2D nodeCoord = canvas.localToScene(mouseReleased.getX(), mouseReleased.getY());
             int col, row;
-            col = (int)(mouseReleased.getX()-nodeCoord.getX())%200;
-            row = (int)(mouseReleased.getY()-nodeCoord.getY())%200;
+            col = (int)(nodeCoord.getX())/200;
+            row = (int)(nodeCoord.getY())/200;
             m.stopDD(col,row);
-            //System.out.println(nodeCoord.getY());
             
             
             });
