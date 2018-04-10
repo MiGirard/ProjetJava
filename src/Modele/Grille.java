@@ -18,11 +18,11 @@ import javafx.scene.control.ButtonType;
  */
 public class Grille extends Observable {
     
-    private List listeCase = new ArrayList<Case>();
-    private List listeChemin = new ArrayList<Chemin>();
+    private ArrayList<Case> listeCase = new ArrayList<Case>();
+    private ArrayList<Chemin> listeChemin = new ArrayList<Chemin>();
 
     private Case[][] tab;
-    private int lastC, lastR;
+    private int lastC, lastR = -1;
     VueControleur vc = new VueControleur();
     
     
@@ -44,22 +44,31 @@ public class Grille extends Observable {
         // TODO
         System.out.println("startDD : " + c + "-" + r);
         setChanged();
-        notifyObservers();
         listeCase.clear();
-        listeCase.add(new Case(this.tab[c][r].getSymbole(), r, c));
-        listeCase.forEach(System.out::println);
+        notifyObservers();
     }
     
-    public void stopDD(int c, int r) {
-        // TODO
-        Chemin ch = Chemin.verifierChemin((ArrayList<Case>)listeCase);
-        if(ch != null){
-            listeChemin.add(ch);
+    public void stopDD(int c, int r) { 
+        Chemin chem = new Chemin();
+        chem = chem.verifierChemin(listeCase);
+        if(chem != null){
+            System.out.println("Chemin Ajouté");
+            listeChemin.add(chem);
+            System.out.println(listeChemin);
         }
-        else{
+        else {
             vc.loose();
+        }     
+        if(listeChemin.size() == 2){
+            System.out.println(listeChemin.get(0));
+            System.out.println(listeChemin.get(1));
+            if(verifierParcours(listeChemin)){
+                vc.win();
+            }
+            else{
+                vc.loose();
+            }
         }
-
         // mémoriser le dernier objet renvoyé par parcoursDD pour connaitre la case de relachement
         
         System.out.println("stopDD : " + c + "-" + r + " -> " + lastC + "-" + lastR);
@@ -95,11 +104,16 @@ public class Grille extends Observable {
             List listecs =  ch.getListe();
             for(int j = 0; j < listecs.size(); j++){
                 Case cs = (Case) listecs.get(j);
-                boolean test = tabTest[cs.getRow()][cs.getColumn()];
-                if(!test){
+               // System.out.println(tabTest[cs.getRow()][cs.getColumn()]);
+                if(!tabTest[cs.getRow()][cs.getColumn()]){
                     tabTest[cs.getRow()][cs.getColumn()] = true;
+                    //System.out.println(l.get(i));
+                    //System.out.println(tabTest[cs.getRow()][cs.getColumn()]);
                 }
                 else{
+                   // System.out.println("Chemin déja pris");
+                    //System.out.println(i+ "," +j);
+                   // System.out.println(l.get(i));
                     return false;
                 }
             }  
@@ -108,6 +122,7 @@ public class Grille extends Observable {
          for(int i = 0; i<tabTest.length; i++){
             for(int j = 0; j<tabTest[i].length; j++){
                 if(tabTest[i][j] == false){
+                    System.out.println("Grille pas parcouru en entier");
                     return false;
                 }
             }
@@ -117,10 +132,6 @@ public class Grille extends Observable {
     
     public void setTab(Case[][] tab){
         this.tab = tab;
-    }
-
-    public void setListeChemin(List listeChemin) {
-        this.listeChemin = listeChemin;
     }
 
     public List getListeChemin() {
