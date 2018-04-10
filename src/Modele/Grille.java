@@ -29,18 +29,8 @@ public class Grille extends Observable {
     
     
     public Grille(){
-        this.tab = new Case[3][3];
-        for(int i = 0; i < this.tab.length; i++){
-            for(int j = 0; j < this.tab[0].length; j++){
-                this.tab[i][j] = new Case(Lien.CASE_VIDE ,i, j);
-            }
-        }
-        this.tab[0][0] = new Case(Symbole.CARRE, 0, 0);
-        this.tab[1][2] = new Case(Symbole.CARRE, 1, 2);
-        this.tab[2][0] = new Case(Symbole.ETOILE, 2, 0);
-        this.tab[2][2] = new Case(Symbole.ETOILE, 2, 2);
-        this.nbChemin = 2;
         
+        grille3x3();
     }
     
     public void startDD(int c, int r) {
@@ -152,6 +142,24 @@ public class Grille extends Observable {
 
     public int getLastR() {
         return lastR;
+    }
+    
+    private void modifierTab(){
+        
+    }
+    
+    private void grille3x3(){
+        this.tab = new Case[3][3];
+        for(int i = 0; i < this.tab.length; i++){
+            for(int j = 0; j < this.tab[0].length; j++){
+                this.tab[i][j] = new Case(Lien.CASE_VIDE ,i, j);
+            }
+        }
+        this.tab[0][0] = new Case(Symbole.CARRE, 0, 0);
+        this.tab[1][2] = new Case(Symbole.CARRE, 1, 2);
+        this.tab[2][0] = new Case(Symbole.ETOILE, 2, 0);
+        this.tab[2][2] = new Case(Symbole.ETOILE, 2, 2);
+        this.nbChemin = 2;
     }
     
     
