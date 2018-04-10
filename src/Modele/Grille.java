@@ -21,22 +21,25 @@ public class Grille extends Observable {
     private ArrayList<Case> listeCase = new ArrayList<Case>();
     private ArrayList<Chemin> listeChemin = new ArrayList<Chemin>();
 
+    
     private Case[][] tab;
     private int lastC, lastR = -1;
-    VueControleur vc = new VueControleur();
+    private int nbChemin;
+    private VueControleur vc = new VueControleur();
     
     
     public Grille(){
-        tab = new Case[3][3];
+        this.tab = new Case[3][3];
         for(int i = 0; i < this.tab.length; i++){
             for(int j = 0; j < this.tab[0].length; j++){
-                tab[i][j] = new Case(Lien.CASE_VIDE ,i, j);
+                this.tab[i][j] = new Case(Lien.CASE_VIDE ,i, j);
             }
         }
-        tab[0][0] = new Case(Symbole.CARRE, 0, 0);
-        tab[1][2] = new Case(Symbole.CARRE, 1, 2);
-        tab[2][0] = new Case(Symbole.ETOILE, 2, 0);
-        tab[2][2] = new Case(Symbole.ETOILE, 2, 2);
+        this.tab[0][0] = new Case(Symbole.CARRE, 0, 0);
+        this.tab[1][2] = new Case(Symbole.CARRE, 1, 2);
+        this.tab[2][0] = new Case(Symbole.ETOILE, 2, 0);
+        this.tab[2][2] = new Case(Symbole.ETOILE, 2, 2);
+        this.nbChemin = 2;
         
     }
     
@@ -59,7 +62,7 @@ public class Grille extends Observable {
         else {
             vc.loose();
         }     
-        if(listeChemin.size() == 2){
+        if(listeChemin.size() == this.nbChemin){
             System.out.println(listeChemin.get(0));
             System.out.println(listeChemin.get(1));
             if(verifierParcours(listeChemin)){
