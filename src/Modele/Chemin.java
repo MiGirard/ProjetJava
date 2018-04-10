@@ -21,7 +21,7 @@ public class Chemin {
     }
     
     public Chemin(ArrayList<Case> l){ 
-        this.liste = l;
+        this.liste = (List) l.clone();
     }
     
     public static Chemin verifierChemin(ArrayList<Case> l){
