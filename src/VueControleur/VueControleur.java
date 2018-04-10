@@ -104,7 +104,9 @@ public class VueControleur extends Application {
 
             @Override
             public void update(Observable o, Object arg) {
-           
+                GraphicsContext gc = canvas.getGraphicsContext2D();
+                gc.clearRect(0, 0, m.getTab().length*200, m.getTab()[0].length*200);
+                initDraw(gc);
             }
         });
         
