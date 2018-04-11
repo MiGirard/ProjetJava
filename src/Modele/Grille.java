@@ -33,6 +33,21 @@ public class Grille extends Observable {
     public Grille(){
         
         grille3x3();
+        //grille4x4();
+    }
+    
+    public Grille(int x){
+        switch(x){
+            case 3:
+                grille3x3();
+                break;
+            case 4:
+                grille4x4();
+                break;
+            default:
+                grille3x3();
+                break;
+        }
     }
     
     public void startDD(int c, int r) {
@@ -89,7 +104,7 @@ public class Grille extends Observable {
     }
     
     private boolean verifierParcours(ArrayList<Chemin> l){
-        boolean [][] tabTest = new boolean[tab.length][tab[0].length];
+        boolean [][] tabTest = new boolean[this.tab.length][this.tab[0].length];
         for(int i = 0; i<tabTest.length; i++){
             for(int j = 0; j<tabTest[i].length; j++){
                 tabTest[i][j] = false;
@@ -102,8 +117,8 @@ public class Grille extends Observable {
             for(int j = 0; j < listecs.size(); j++){
                 Case cs = (Case) listecs.get(j);
                // System.out.println(tabTest[cs.getRow()][cs.getColumn()]);
-                if(!tabTest[cs.getRow()][cs.getColumn()]){
-                    tabTest[cs.getRow()][cs.getColumn()] = true;
+                if(!tabTest[cs.getColumn()][cs.getRow()]){
+                    tabTest[cs.getColumn()][cs.getRow()] = true;
                     //System.out.println(l.get(i));
                     //System.out.println(tabTest[cs.getRow()][cs.getColumn()]);
                 }
@@ -259,6 +274,22 @@ public class Grille extends Observable {
         this.tab[2][0] = new Case(Symbole.ETOILE, 2, 0);
         this.tab[2][2] = new Case(Symbole.ETOILE, 2, 2);
         this.nbChemin = 2;
+    }
+    
+    private void grille4x4(){
+        this.tab = new Case[4][4];
+        for(int i = 0; i < this.tab.length; i++){
+            for(int j = 0; j < this.tab[0].length; j++){
+                this.tab[i][j] = new Case(Lien.CASE_VIDE ,i, j);
+            }
+        }
+        this.tab[0][0] = new Case(Symbole.CARRE, 0, 0);
+        this.tab[3][3] = new Case(Symbole.CARRE, 3, 3);
+        this.tab[2][0] = new Case(Symbole.ETOILE, 2, 0);
+        this.tab[3][2] = new Case(Symbole.ETOILE, 3, 2);
+        this.tab[0][1] = new Case(Symbole.TRIANGLE, 0, 1);
+        this.tab[0][3] = new Case(Symbole.TRIANGLE, 0, 3);
+        this.nbChemin = 3;
     }
     
     

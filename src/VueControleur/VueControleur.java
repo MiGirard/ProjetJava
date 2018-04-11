@@ -211,9 +211,9 @@ public class VueControleur extends Application {
     
     public void loose(){
         Alert alertloose = new Alert(AlertType.WARNING);
-        alertloose.setTitle("T NUL");
+        alertloose.setTitle("Perdu");
         alertloose.setHeaderText(null);
-        alertloose.setContentText("Vous avez perdu. haha.");
+        alertloose.setContentText("Vous avez perdu haha.");
         Optional<ButtonType> result = alertloose.showAndWait();
         if (result.get() == ButtonType.OK){
             System.exit(0);
@@ -222,7 +222,7 @@ public class VueControleur extends Application {
     
     public void win(){
         Alert alertwin = new Alert(AlertType.WARNING);
-        alertwin.setTitle("T FOR");
+        alertwin.setTitle("Gagné");
         alertwin.setHeaderText(null);
         alertwin.setContentText("Vous avez gagnez...");
         Optional<ButtonType> result = alertwin.showAndWait();
